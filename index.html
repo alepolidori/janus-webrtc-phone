@@ -3,40 +3,130 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="src/css/style.css"> -->
   <title>WebRTC Phone</title>
-  <link rel="stylesheet" href="src/css/style.css" />
 </head>
 
 <body>
-  <h1>WebRTC Phone - Janus</h1>
-  <div class="row">
+  <div class="container">
+    <h1>WebRTC SIP Phone</h1>
+    <h6>(using Janus-Gateway)</h6>
+    <div class="row shadow p-3 mb-5 bg-white rounded">
+      <div class="col-md-4">
+
+        <form>
+          <div class="form-group">
+            <label for="server-address">Server address</label>
+            <input type="text" class="form-control" id="server-address" aria-describedby="serverAddressHelp"
+              placeholder="e.g. pbx.nethvoice.it" value="192.168.11.22">
+          </div>
+          <div class="form-group">
+            <label for="name">Display name</label>
+            <input type="text" class="form-control" id="name" placeholder="e.g. Astricon" value="AleP">
+          </div>
+          <div class="form-group">
+            <label for="exten">Extension</label>
+            <input type="text" class="form-control" id="exten" placeholder="Extension" value="200">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" value="Nethesis,1234">
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button id="login-btn" class="btn btn-success w-100" type="button">Login</button>
+            </div>
+            <div class="col-md-6">
+              <button id="logout-btn" class="btn btn-danger w-100" type="button" disabled>Logout</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-8">
+        <form>
+          <div class="form-group">
+            <label>Call</label>
+            <div class="input-group">
+              <input value="201" type="text" id="call-to" class="form-control" aria-label="Text input with dropdown button" placeholder="Enter phone number to call" disabled>
+              <div class="input-group-append">
+                <button id="call-btn" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" disabled>Call</button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" id="call-audio-btn" href="#">Audio</a>
+                  <a class="dropdown-item" id="call-audio-video-btn" href="#">Audio/Video</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <button id="answer-btn" class="btn btn-success w-100" type="button" disabled>Answer</button>
+              </div>
+              <div class="col-md-6">
+                <button id="hangup-btn" class="btn btn-danger w-100" type="button" disabled>Hangup</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col">
+              <label>Remote</label>
+              <div class="input-group embed-responsive embed-responsive-16by9">
+                <video controls autoplay id="remote-stream-video" class="embed-responsive-item"></video>
+              </div>
+            </div>
+            <div class="form-group col">
+              <label>Local</label>
+              <div class="input-group embed-responsive embed-responsive-16by9">
+                <video controls autoplay id="local-stream-video" class="embed-responsive-item"></video>
+                <audio autoplay id="remote-stream-audio"></audio>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="node_modules/webrtc-adapter/out/adapter.js"></script> -->
+  <script src="lib/janus.js"></script>
+  <script src="lib/adapter.js"></script>
+  <!-- <script src="lib/janus-0.4.4.js"></script> -->
+  <script src="src/js/app.js"></script>
+  <script src="src/js/webrtc-phone.js"></script>
+  <!-- <div>
     <label>Server:</label>
     <input type="text" value="" id="server-address" placeholder="192.168.1.10">
   </div>
-  <div class="row">
+  <div>
     <label>Display Name:</label>
     <input type="text" value="" id="name">
   </div>
-  <div class="row">
+  <div>
     <label>Extension:</label>
     <input type="text" value="" id="exten" placeholder="200">
   </div>
-  <div class="row">
+  <div>
     <label>Password:</label>
     <input type="password" value="" id="password">
   </div>
 
   <div class="margin-list">
-    <div class="row">
+    <div>
       <button id="init-btn">Init Engine</button>
       <button id="login-btn">Login</button>
     </div>
-    <div class="row">
+    <div>
       <button id="call-btn">Call</button>
       <input type="text" value="201" id="call-to">
     </div>
-    <div class="row">
+    <div>
       <button id="answer-btn">Answer</button>
       <button id="hangup-btn">Hangup</button>
     </div>
@@ -48,13 +138,13 @@
     <span class="row-title">Local</span>
   </div>
   <video autoplay controls id="remote-stream-video" class="stream-video"></video>
-  <video autoplay controls id="local-stream-video" class="stream-video" muted="muted"></video>
+  <video autoplay controls id="local-stream-video" class="stream-video" muted="muted"></video> -->
 
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="lib/janus.js"></script>
+
+  <!-- <script src="lib/janus.js"></script>
   <script src="lib/adapter.js"></script>
   <script src="src/js/app.js"></script>
-  <script src="src/js/webrtc-phone.js"></script>
+  <script src="src/js/webrtc-phone.js"></script> -->
 </body>
 
 </html>

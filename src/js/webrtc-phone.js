@@ -153,7 +153,7 @@ var webrtcPhone = (function () {
     });
   };
 
-  function init(data) {
+  function initAndLogin(data) {
     server = data.server;
     janusUrl = 'https://' + server + '/janus';
     name = data.name;
@@ -166,6 +166,10 @@ var webrtcPhone = (function () {
     remoteStreamAudio = $('#' + audioId).get(0);
     remoteStreamVideo = $('#' + remoteVideoId).get(0);
 
+    if (sipcall) {
+      login();
+      return;
+    }
     Janus.init({
       debug: "all",
       callback: function () {
@@ -186,7 +190,9 @@ var webrtcPhone = (function () {
               success: function (pluginHandle) {
                 sipcall = pluginHandle;
                 Janus.log("Plugin attached! (" + sipcall.getPlugin() + ", id=" + sipcall.getId() + ")");
-                getSupportedDevices(function () {});
+                getSupportedDevices(function () {
+                  login();
+                });
               },
               error: function (error) {
                 Janus.error("  -- Error attaching plugin...", error);
@@ -221,17 +227,29 @@ var webrtcPhone = (function () {
                       Janus.log("Successfully registered as " + result["username"] + "!");
                       if (!registered) {
                         registered = true;
+                        $(document).trigger('registered');
+                      }
+                      break;
+
+                    case 'unregistered':
+                      Janus.log("Successfully unregistered as " + result["username"] + "!");
+                      if (registered) {
+                        registered = false;
+                        $(document).trigger('unregistered');
                       }
                       break;
 
                     case 'calling':
                       Janus.log("Waiting for the peer to answer...");
+                      $(document).trigger('calling');
                       break;
 
                     case 'incomingcall':
+                      incoming = true;
                       ringing.play();
                       Janus.log("Incoming call from " + result["username"] + "!");
                       currentJsep = jsep;
+                      $(document).trigger('incomingcall');
                       break;
 
                     case 'progress':
@@ -248,16 +266,16 @@ var webrtcPhone = (function () {
                       if (jsep !== null && jsep !== undefined) {
                         handleRemote(jsep);
                       }
+                      $(document).trigger('callaccepted');
                       break;
 
                     case 'hangup':
+                      incoming = null;
                       calling.pause();
                       ringing.pause();
                       Janus.log("Call hung up (" + result["code"] + " " + result["reason"] + ")!");
-                      if (incoming != null) {
-                        incoming = null;
-                      }
                       sipcall.hangup();
+                      $(document).trigger('hangup');
                       break;
 
                     default:
@@ -324,6 +342,17 @@ var webrtcPhone = (function () {
     }
   }
 
+  function logout() {
+    if (sipcall) {
+      var unregister = {
+        request: 'unregister'
+      };
+      sipcall.send({
+        'message': unregister
+      });
+    }
+  }
+
   function call(to) {
     calling.play();
     var sipUri = 'sip:' + to + '@127.0.0.1';
@@ -355,7 +384,7 @@ var webrtcPhone = (function () {
     });
   }
 
-  function handleRemote (jsep) {
+  function handleRemote(jsep) {
     sipcall.handleRemoteJsep({
       jsep: jsep,
       error: function () {
@@ -405,6 +434,10 @@ var webrtcPhone = (function () {
   }
 
   function hangup(e) {
+    if (incoming) {
+      decline();
+      return;
+    }
     var hangup = {
       "request": "hangup"
     };
@@ -414,12 +447,23 @@ var webrtcPhone = (function () {
     sipcall.hangup();
   }
 
+  function decline() {
+    incoming = null;
+    var body = {
+      "request": "decline"
+    };
+    sipcall.send({
+      "message": body
+    });
+  };
+
   return {
-    init: init,
     call: call,
     login: login,
+    logout: logout,
     answer: answer,
-    hangup: hangup
+    hangup: hangup,
+    initAndLogin: initAndLogin
   };
 
 })();
