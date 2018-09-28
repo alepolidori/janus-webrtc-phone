@@ -1,5 +1,34 @@
 {
-  "dependencies": {
-    "jquery": "^3.3.1"
-  }
+  "name": "janus-webrtc-phone",
+  "version": "0.0.1",
+  "description": "HTML5 SIP phone WebRTC using Janus-Gateway",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alepolidori/janus-webrtc-phone.git"
+  },
+  "keywords": [
+    "webrtc",
+    "sip",
+    "phone",
+    "html5",
+    "janus",
+    "janus-gateway",
+    "rtp",
+    "srtp",
+    "audio",
+    "video",
+    "phone-calls",
+    "javscript",
+    "asterisk",
+    "nethserver",
+    "freepbx",
+    "voip",
+    "pbx"
+  ],
+  "author": "Alessandro Polidori",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/alepolidori/janus-webrtc-phone/issues"
+  },
+  "homepage": "https://github.com/alepolidori/janus-webrtc-phone#readme"
 }
