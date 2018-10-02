@@ -353,7 +353,7 @@ var webrtcPhone = (function () {
     }
   }
 
-  function call(to) {
+  function call(to, video) {
     calling.play();
     var sipUri = 'sip:' + to + '@127.0.0.1';
     getSupportedDevices(function () {
@@ -362,8 +362,8 @@ var webrtcPhone = (function () {
         media: {
           audioSend: true,
           audioRecv: true,
-          videoSend: true,
-          videoRecv: true
+          videoSend: video,
+          videoRecv: video
         },
         success: function (jsep) {
           Janus.debug("Got SDP!");
