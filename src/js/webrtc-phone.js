@@ -15,6 +15,7 @@ var webrtcPhone = (function () {
   var localStream;
   var remoteStreamAudio;
   var remoteStreamVideo;
+  var counterpartNum;
   var started = false;
   var registered = false;
   var supportedDevices = {};
@@ -245,11 +246,12 @@ var webrtcPhone = (function () {
                       break;
 
                     case 'incomingcall':
+                      counterpartNum = msg.result.username.split('@')[0].split(':')[1];
                       incoming = true;
                       ringing.play();
                       Janus.log("Incoming call from " + result["username"] + "!");
                       currentJsep = jsep;
-                      $(document).trigger('incomingcall');
+                      $(document).trigger('incomingcall', counterpartNum);
                       break;
 
                     case 'progress':
@@ -376,6 +378,7 @@ var webrtcPhone = (function () {
             "message": body,
             "jsep": jsep
           });
+          counterpartNum = to;
         },
         error: function (error) {
           Janus.error("WebRTC error...", error);
@@ -457,13 +460,18 @@ var webrtcPhone = (function () {
     });
   };
 
+  function getCounterpartNum() {
+    return counterpartNum;
+  };
+
   return {
     call: call,
     login: login,
     logout: logout,
     answer: answer,
     hangup: hangup,
-    initAndLogin: initAndLogin
+    initAndLogin: initAndLogin,
+    getCounterpartNum: getCounterpartNum
   };
 
 })();

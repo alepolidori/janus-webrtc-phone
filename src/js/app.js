@@ -16,19 +16,19 @@ $(function () {
   $(document).on('calling', function (ev) {
     $('#hangup-btn').removeAttr('disabled');
     $('#call-btn,#call-to').attr('disabled','disabled');
-    $('#output-lbl').text('Calling...');
+    $('#output-lbl').text('Calling ' + webrtcPhone.getCounterpartNum() + '...');
   });
 
-  $(document).on('incomingcall', function (ev) {
+  $(document).on('incomingcall', function (ev, from) {
     $('#hangup-btn,#answer-btn').removeAttr('disabled');
     $('#call-btn,#call-to').attr('disabled','disabled');
-    $('#output-lbl').text('...incoming call');
+    $('#output-lbl').text('...incoming call from ' + from);
   });
 
   $(document).on('callaccepted', function (ev) {
     $('#hangup-btn').removeAttr('disabled');
     $('#call-btn,#call-to,#answer-btn').attr('disabled','disabled');
-    $('#output-lbl').text('...in conversation');
+    $('#output-lbl').text('...in conversation with ' + webrtcPhone.getCounterpartNum());
   });
 
   $(document).on('hangup', function (ev) {
