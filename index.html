@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="src/css/style.css">
   <title>WebRTC Phone</title>
 </head>
 
@@ -78,15 +79,13 @@
           </div>
           <div class="row">
             <div class="form-group col">
-              <label>Remote</label>
               <div class="input-group embed-responsive embed-responsive-16by9">
+                <span class="local-text">Remote</span>
                 <video controls autoplay id="remote-stream-video" class="embed-responsive-item"></video>
               </div>
-            </div>
-            <div class="form-group col">
-              <label>Local</label>
-              <div class="input-group embed-responsive embed-responsive-16by9">
-                <video controls autoplay id="local-stream-video" class="embed-responsive-item"></video>
+              <div class="input-group embed-responsive embed-responsive-16by9 remote">
+                <span class="remote-text">Local</span>
+                <video  autoplay id="local-stream-video" class="embed-responsive-item"></video>
                 <audio autoplay id="remote-stream-audio"></audio>
               </div>
             </div>

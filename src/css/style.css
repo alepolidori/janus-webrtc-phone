@@ -1,0 +1,23 @@
+.remote {
+  position: absolute;
+  width: 25%;
+  top: 0px;
+  right: 15px;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.local-text {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  color: white;
+  z-index: 99;
+}
+
+.remote-text {
+  position: absolute;
+  color: white;
+  top: 2px;
+  right: 5px;
+}
