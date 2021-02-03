@@ -37,7 +37,7 @@ $(function () {
     $('#output-lbl').text('Registered');
   });
 
-  $('#login-btn').click(function () {
+  $('#login-btn').on('click', function () {
     webrtcPhone.initAndLogin({
       server: $('#server-address').val(),
       name: $('#name').val(),
@@ -49,25 +49,25 @@ $(function () {
     });
   });
 
-  $('#logout-btn').click(function () {
+  $('#logout-btn').on('click', function () {
     webrtcPhone.hangup();
     webrtcPhone.logout();
   });
 
-  $('#hangup-btn').click(function () {
+  $('#hangup-btn').on('click', function () {
     webrtcPhone.hangup();
   });
 
-  $('#answer-btn').click(function () {
+  $('#answer-btn').on('click', function () {
     webrtcPhone.answer();
   });
 
-  $('#call-audio-video-btn').click(function () {
+  $('#call-audio-video-btn').on('click', function () {
     var to = $('#call-to').val();
     webrtcPhone.call(to, true);
   });
 
-  $('#call-audio-btn').click(function () {
+  $('#call-audio-btn').on('click', function () {
     var to = $('#call-to').val();
     webrtcPhone.call(to, false);
   });
